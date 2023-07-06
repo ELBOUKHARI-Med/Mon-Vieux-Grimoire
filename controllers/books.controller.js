@@ -117,31 +117,7 @@ async function deleteBook(req, res) {
   }
 }
 
-//Cette fonction est un middleware qui vérifie le jeton d'autorisation présent dans le header "Authorization"
-function checkToken(req, res, next) {
-  const headers = req.headers;
-  const authorization = headers.authorization;
-  if (authorization == null) {
-    res.status(401).send("Non autorisé");
-    return;
-  }
-  // Extrait le jeton d'autorisation du header "Authorization"
-  const token = authorization.split(" ")[1];
-  try {
-    const jwtSecret = String(process.env.JWT_SECRET);
-    // Vérifie la validité du jeton
-    const tokenPayload = jwt.verify(token, jwtSecret);
-    if (tokenPayload == null) {
-      res.status(401).send("Non autorisé");
-      return;
-    }
-    req.tokenPayload = tokenPayload;
-    next();
-  } catch (e) {
-    console.error(e);
-    res.status(401).send("Non autorisé");
-  }
-}
+
 
 // Cette fonction récupère un livre de la base de données en utilisant son ID. Si le livre n'est pas trouvé, une réponse avec le statut 404 est renvoyée
 async function getBookById(req, res) {
@@ -199,4 +175,4 @@ function getAbsoluteImagePath(fileName) {
   return process.env.PUBLIC_URL + "/" + process.env.IMAGES_PUBLIC_URL + "/" + fileName;
 }
 
-module.exports = { getBestRating, getBookById, getBooks, postBook, deleteBook, putBook, postRating, checkToken }
+module.exports = { getBestRating, getBookById, getBooks, postBook, deleteBook, putBook, postRating }

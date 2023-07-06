@@ -2,7 +2,19 @@ const { User } = require("../models/User");
 const bcrypt = require("bcrypt");
 const express = require("express");
 const jwt = require("jsonwebtoken");
+var passwordValidator = require('password-validator');
 
+var schema = new passwordValidator();
+
+// Add properties to it
+schema
+.is().min(8)                                    // Minimum length 8
+.is().max(100)                                  // Maximum length 100
+.has().uppercase()                              // Must have uppercase letters
+.has().lowercase()                              // Must have lowercase letters
+.has().digits(2)                                // Must have at least 2 digits
+.has().not().spaces()                           // Should not have spaces
+.is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
 
 
 //Cette fonction gère le processus d'inscription d'un utilisateur. Elle récupère l'email et le mot de passe à partir de la requête (req)
@@ -13,7 +25,13 @@ async function signUp(req, res) {
     res.status(400).send("L'e-mail et le mot de passe sont requis");// Vérifie si l'email et le mot de passe sont fournis
     return;
   }
-
+  
+  console.log(schema.validate(password,{ details: true }));
+  if (!schema.validate(password)) {
+    res.status(400).send("Le mot de passe ne réspecte pas les pré-requis (majuscule et miniscule et caractère numérique");// Vérifie si l'email et le mot de passe sont fournis
+    return;
+  }
+  
   try {
     const userInDb = await User.findOne({
       email: email

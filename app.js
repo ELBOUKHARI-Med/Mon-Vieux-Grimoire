@@ -1,15 +1,15 @@
 // Importer les modules nécessaires
 const express = require("express");
 const cors = require("cors");
-const { usersRouter } = require("../routes/users.route");
-const { booksRouter } = require("../routes/books.route");
-
+const { usersRouter } = require("./routes/users.route");
+const { booksRouter } = require("./routes/books.route");
+require("dotenv").config();
 const PORT = process.env.PORT || 4000;
 
 // Créer une instance d'application Express
 const app = express();
 // Importer le module de configuration de la base de données
-require("./../db/mongo.js");
+require("./db/mongo.js");
 
 // Définir le chemin du dossier contenant les images
 const IMAGES_FOLDER = String(process.env.IMAGES_FOLDER);

@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 // URL de connexion à la base de données MongoDB
-const DB_URL = `mongodb+srv://ELBOUKHARI:24081986@atlascluster.tq1ya3n.mongodb.net/?retryWrites=true&w=majority`;
+const DB_URL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@atlascluster.tq1ya3n.mongodb.net/?retryWrites=true&w=majority`;
 // Fonction asynchrone pour établir la connexion à la base de données
 async function connect() {
   try {
