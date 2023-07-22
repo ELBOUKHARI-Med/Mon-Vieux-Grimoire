@@ -27,8 +27,10 @@ async function postRating(req, res) {
     const newRating = { userId, grade: rating };
     ratingsInDb.push(newRating);
     book.averageRating = calculateAverageRating(ratingsInDb);// Calcule la nouvelle note moyenne du livre
+    
     await book.save();
-    res.send("Rating posted");
+    book.imageUrl = getAbsoluteImagePath(book.imageUrl);
+    res.send(book);
   } catch (e) {
     console.error(e);
     res.status(500).send("Une erreur s'est produite:" + e.message);
